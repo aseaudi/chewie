@@ -25,7 +25,7 @@ class _ChewieDemoState extends State<ChewieDemo> {
   late VideoPlayerController _videoPlayerController2;
   ChewieController? _chewieController;
   int? bufferDelay;
-
+  final PageController _pageController = PageController(initialPage: 0);
   @override
   void initState() {
     super.initState();
@@ -84,17 +84,7 @@ class _ChewieDemoState extends State<ChewieDemo> {
       looping: true,
       progressIndicatorDelay:
           bufferDelay != null ? Duration(milliseconds: bufferDelay!) : null,
-      //fullScreenByDefault: true,
-      additionalOptions: (context) {
-        return <OptionItem>[
-          OptionItem(
-            onTap: toggleVideo,
-            iconData: Icons.live_tv_sharp,
-            title: 'Toggle Video Src',
-          ),
-        ];
-      },
-    
+      // fullScreenByDefault: true,
       hideControlsTimer: const Duration(seconds: 1),
       // autoInitialize: true,
     );
@@ -103,10 +93,12 @@ class _ChewieDemoState extends State<ChewieDemo> {
   int currPlayIndex = 0;
 
   Future<void> toggleVideo() async {
+    print('XXXXX toggle video\n');
     // await _videoPlayerController1.pause();
     _createChewieController(_videoPlayerController2);
     setState(() {});
     currPlayIndex += 1;
+    print('XXXX currentIndex $currPlayIndex \n');
     if (currPlayIndex >= srcs.length) {
       currPlayIndex = 0;
     }
@@ -131,33 +123,45 @@ class _ChewieDemoState extends State<ChewieDemo> {
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              child: Center(
-                child: _chewieController != null &&
-                        _chewieController!
-                            .videoPlayerController.value.isInitialized
-                    ? Chewie(
-                        controller: _chewieController!,
-                      )
-                    : const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(height: 20),
-                          Text('Loading'),
-                        ],
-                      ),
-              ),
-            ),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: toggleVideo,
+        body: PageView.builder(
+          controller: _pageController,
+          scrollDirection: Axis.vertical,
+          onPageChanged: (index) {
+            print('YYYYY index $index\n');
+           print('XXXXX toggle video\n');
+    _createChewieController(_videoPlayerController2);
+    setState(() {});
+    currPlayIndex += 1;
+    print('XXXX currentIndex $currPlayIndex \n');
+    if (currPlayIndex >= srcs.length) {
+      currPlayIndex = 0;
+    }
+    _videoPlayerController1 =
+        VideoPlayerController.networkUrl(Uri.parse(srcs[currPlayIndex]));
+    _videoPlayerController2 =
+        VideoPlayerController.networkUrl(Uri.parse(srcs[currPlayIndex+1]));
+      _videoPlayerController1.initialize();
+      _videoPlayerController2.initialize();
+          },
+          itemBuilder: (context, index) {
+            return _chewieController != null &&
+                _chewieController!
+                    .videoPlayerController.value.isInitialized
+              ? Chewie(
+                  controller: _chewieController!,
+                )
+              : const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 20),
+                    Text('Loading'),
+                  ],
+                );
+          }
         ),
       ),
-    );
+    );  
   }
 }
 
