@@ -21,8 +21,8 @@ class ChewieDemo extends StatefulWidget {
 
 class _ChewieDemoState extends State<ChewieDemo> {
   TargetPlatform? _platform;
-  // late VideoPlayerController _videoPlayerController1;
-  late VideoPlayerController _videoPlayerController;
+  late VideoPlayerController _videoPlayerController1;
+  late VideoPlayerController _videoPlayerController2;
   ChewieController? _chewieController;
   int? bufferDelay;
 
@@ -34,98 +34,50 @@ class _ChewieDemoState extends State<ChewieDemo> {
 
   @override
   void dispose() {
-    // _videoPlayerController1.dispose();
-    _videoPlayerController.dispose();
+    _videoPlayerController1.dispose();
+    _videoPlayerController2.dispose();
     _chewieController?.dispose();
     super.dispose();
   }
 
   List<String> srcs = [
     "https://www.treefe.in/video_1725979416530825_0_dKbGnV7wCPCqbWB4.mp4",
-"https://www.treefe.in/video_1725519289224798_0_JTf8Q5ovZDqgSCcJ.mp4",
-"https://www.treefe.in/video_1728390696278373_0_mkCfbAEsvF6SvWGe.mp4",
-"https://www.treefe.in/video_1726913543848460_0_tqz9k7ujIekqSUwj.mp4",
-"https://www.treefe.in/video_1727962702007024_0_nUSat8Wn5OwQDlEq.mp4",
-"https://www.treefe.in/video_1727081419590442_0_mdt6U5bTRihjEkED.mp4",
-"https://www.treefe.in/video_1725961307474236_0_5uYPFkA9ER7M64ae.mp4",
-"https://www.treefe.in/video_1728132075819621_0_3Nz1m7y8qoVgvB2U.mp4",
-"https://www.treefe.in/video_1726922612182235_0_vrfykzRTP4c43M7G.mp4",
-"https://www.treefe.in/video_1727965216635177_0_dYHg8JkndfKB1Qcj.mp4",
-'https://www.treefe.in/video_1728053218511292_0_40jAv6nHnHgupECs.mp4',
-"https://www.treefe.in/video_1725966235451248_0_CCMZAjizu8TsaUsl.mp4",
-"https://www.treefe.in/video_1727080353303273_0_cYMRgRKyxNwIB1X0.mp4",
-"https://www.treefe.in/video_1726652000566755_0_buAq5AomTRKclAqb.mp4",
-"https://www.treefe.in/video_1725446629120499_0_k3pS8qeOcEII3o01.mp4",
-"https://www.treefe.in/video_1728124071571171_0_PDTwgK5SlbOZIz7u.mp4",
-"https://www.treefe.in/video_1726671468883984_0_V4dlc5j0EtJ6rioE.mp4",
-"https://www.treefe.in/video_1725979591893362_0_jc9aUftTgdnyfgHK.mp4",
-"https://www.treefe.in/video_1726667766414573_0_WTRTOGkiJWC30Rlu.mp4",
-"https://www.treefe.in/video_1726918827098260_0_wbgsDoFNumLxyMU2.mp4",
+    "https://www.treefe.in/video_1725519289224798_0_JTf8Q5ovZDqgSCcJ.mp4",
+    "https://www.treefe.in/video_1728390696278373_0_mkCfbAEsvF6SvWGe.mp4",
+    "https://www.treefe.in/video_1726913543848460_0_tqz9k7ujIekqSUwj.mp4",
+    "https://www.treefe.in/video_1727962702007024_0_nUSat8Wn5OwQDlEq.mp4",
+    "https://www.treefe.in/video_1727081419590442_0_mdt6U5bTRihjEkED.mp4",
+    "https://www.treefe.in/video_1725961307474236_0_5uYPFkA9ER7M64ae.mp4",
+    "https://www.treefe.in/video_1728132075819621_0_3Nz1m7y8qoVgvB2U.mp4",
+    "https://www.treefe.in/video_1726922612182235_0_vrfykzRTP4c43M7G.mp4",
+    "https://www.treefe.in/video_1727965216635177_0_dYHg8JkndfKB1Qcj.mp4",
+    'https://www.treefe.in/video_1728053218511292_0_40jAv6nHnHgupECs.mp4',
+    "https://www.treefe.in/video_1725966235451248_0_CCMZAjizu8TsaUsl.mp4",
+    "https://www.treefe.in/video_1727080353303273_0_cYMRgRKyxNwIB1X0.mp4",
+    "https://www.treefe.in/video_1726652000566755_0_buAq5AomTRKclAqb.mp4",
+    "https://www.treefe.in/video_1725446629120499_0_k3pS8qeOcEII3o01.mp4",
+    "https://www.treefe.in/video_1728124071571171_0_PDTwgK5SlbOZIz7u.mp4",
+    "https://www.treefe.in/video_1726671468883984_0_V4dlc5j0EtJ6rioE.mp4",
+    "https://www.treefe.in/video_1725979591893362_0_jc9aUftTgdnyfgHK.mp4",
+    "https://www.treefe.in/video_1726667766414573_0_WTRTOGkiJWC30Rlu.mp4",
+    "https://www.treefe.in/video_1726918827098260_0_wbgsDoFNumLxyMU2.mp4",
   ];
 
   Future<void> initializePlayer() async {
-    // _videoPlayerController1 =
-    //     VideoPlayerController.networkUrl(Uri.parse(srcs[currPlayIndex]));
-    _videoPlayerController =
+    _videoPlayerController1 =
         VideoPlayerController.networkUrl(Uri.parse(srcs[currPlayIndex]));
+    _videoPlayerController2 =
+        VideoPlayerController.networkUrl(Uri.parse(srcs[currPlayIndex+1]));
     await Future.wait([
-      // _videoPlayerController1.initialize(),
-      _videoPlayerController.initialize()
+      _videoPlayerController1.initialize(),
+      _videoPlayerController2.initialize()
     ]);
-    _createChewieController();
+    _createChewieController(_videoPlayerController1);
     setState(() {});
   }
 
-  void _createChewieController() {
-    // final subtitles = [
-    //     Subtitle(
-    //       index: 0,
-    //       start: Duration.zero,
-    //       end: const Duration(seconds: 10),
-    //       text: 'Hello from subtitles',
-    //     ),
-    //     Subtitle(
-    //       index: 0,
-    //       start: const Duration(seconds: 10),
-    //       end: const Duration(seconds: 20),
-    //       text: 'Whats up? :)',
-    //     ),
-    //   ];
-
-    final subtitles = [
-      Subtitle(
-        index: 0,
-        start: Duration.zero,
-        end: const Duration(seconds: 10),
-        text: const TextSpan(
-          children: [
-            TextSpan(
-              text: 'Hello',
-              style: TextStyle(color: Colors.red, fontSize: 22),
-            ),
-            TextSpan(
-              text: ' from ',
-              style: TextStyle(color: Colors.green, fontSize: 20),
-            ),
-            TextSpan(
-              text: 'subtitles',
-              style: TextStyle(color: Colors.blue, fontSize: 18),
-            )
-          ],
-        ),
-      ),
-      Subtitle(
-        index: 0,
-        start: const Duration(seconds: 10),
-        end: const Duration(seconds: 20),
-        text: 'Whats up? :)',
-        // text: const TextSpan(
-        //   text: 'Whats up? :)',
-        //   style: TextStyle(color: Colors.amber, fontSize: 22, fontStyle: FontStyle.italic),
-        // ),
-      ),
-    ];
-
+  void _createChewieController(_videoPlayerController) {
+  
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
       autoPlay: true,
@@ -142,33 +94,8 @@ class _ChewieDemoState extends State<ChewieDemo> {
           ),
         ];
       },
-      //subtitle: Subtitles(subtitles),
-      // subtitleBuilder: (context, dynamic subtitle) => Container(
-      //   padding: const EdgeInsets.all(10.0),
-      //   child: subtitle is InlineSpan
-      //       ? RichText(
-      //           text: subtitle,
-      //         )
-      //       : Text(
-      //           subtitle.toString(),
-      //           style: const TextStyle(color: Colors.black),
-      //         ),
-      // ),
-
+    
       hideControlsTimer: const Duration(seconds: 1),
-
-      // Try playing around with some of these other options:
-
-      // showControls: false,
-      // materialProgressColors: ChewieProgressColors(
-      //   playedColor: Colors.red,
-      //   handleColor: Colors.blue,
-      //   backgroundColor: Colors.grey,
-      //   bufferedColor: Colors.lightGreen,
-      // ),
-      // placeholder: Container(
-      //   color: Colors.grey,
-      // ),
       // autoInitialize: true,
     );
   }
@@ -177,11 +104,20 @@ class _ChewieDemoState extends State<ChewieDemo> {
 
   Future<void> toggleVideo() async {
     // await _videoPlayerController1.pause();
+    _createChewieController(_videoPlayerController2);
+    setState(() {});
     currPlayIndex += 1;
     if (currPlayIndex >= srcs.length) {
       currPlayIndex = 0;
     }
-    await initializePlayer();
+    _videoPlayerController1 =
+        VideoPlayerController.networkUrl(Uri.parse(srcs[currPlayIndex]));
+    _videoPlayerController2 =
+        VideoPlayerController.networkUrl(Uri.parse(srcs[currPlayIndex+1]));
+    await Future.wait([
+      _videoPlayerController1.initialize(),
+      _videoPlayerController2.initialize()
+    ]);
   }
 
   @override
@@ -215,132 +151,6 @@ class _ChewieDemoState extends State<ChewieDemo> {
                       ),
               ),
             ),
-            // TextButton(
-            //   onPressed: () {
-            //     _chewieController?.enterFullScreen();
-            //   },
-            //   child: const Text('Fullscreen'),
-            // ),
-            // Row(
-            //   children: <Widget>[
-            //     Expanded(
-            //       child: TextButton(
-            //         onPressed: () {
-            //           setState(() {
-            //             _videoPlayerController1.pause();
-            //             _videoPlayerController1.seekTo(Duration.zero);
-            //             _createChewieController();
-            //           });
-            //         },
-            //         child: const Padding(
-            //           padding: EdgeInsets.symmetric(vertical: 16.0),
-            //           child: Text("Landscape Video"),
-            //         ),
-            //       ),
-            //     ),
-            //     Expanded(
-            //       child: TextButton(
-            //         onPressed: () {
-            //           setState(() {
-            //             _videoPlayerController.pause();
-            //             _videoPlayerController.seekTo(Duration.zero);
-            //             _chewieController = _chewieController!.copyWith(
-            //               videoPlayerController: _videoPlayerController,
-            //               autoPlay: true,
-            //               looping: true,
-            //               /* subtitle: Subtitles([
-            //                 Subtitle(
-            //                   index: 0,
-            //                   start: Duration.zero,
-            //                   end: const Duration(seconds: 10),
-            //                   text: 'Hello from subtitles',
-            //                 ),
-            //                 Subtitle(
-            //                   index: 0,
-            //                   start: const Duration(seconds: 10),
-            //                   end: const Duration(seconds: 20),
-            //                   text: 'Whats up? :)',
-            //                 ),
-            //               ]),
-            //               subtitleBuilder: (context, subtitle) => Container(
-            //                 padding: const EdgeInsets.all(10.0),
-            //                 child: Text(
-            //                   subtitle,
-            //                   style: const TextStyle(color: Colors.white),
-            //                 ),
-            //               ), */
-            //             );
-            //           });
-            //         },
-            //         child: const Padding(
-            //           padding: EdgeInsets.symmetric(vertical: 16.0),
-            //           child: Text("Portrait Video"),
-            //         ),
-            //       ),
-            //     )
-            //   ],
-            // ),
-            // Row(
-            //   children: <Widget>[
-            //     Expanded(
-            //       child: TextButton(
-            //         onPressed: () {
-            //           setState(() {
-            //             _platform = TargetPlatform.android;
-            //           });
-            //         },
-            //         child: const Padding(
-            //           padding: EdgeInsets.symmetric(vertical: 16.0),
-            //           child: Text("Android controls"),
-            //         ),
-            //       ),
-            //     ),
-            //     Expanded(
-            //       child: TextButton(
-            //         onPressed: () {
-            //           setState(() {
-            //             _platform = TargetPlatform.iOS;
-            //           });
-            //         },
-            //         child: const Padding(
-            //           padding: EdgeInsets.symmetric(vertical: 16.0),
-            //           child: Text("iOS controls"),
-            //         ),
-            //       ),
-            //     )
-            //   ],
-            // ),
-            // Row(
-            //   children: <Widget>[
-            //     Expanded(
-            //       child: TextButton(
-            //         onPressed: () {
-            //           setState(() {
-            //             _platform = TargetPlatform.windows;
-            //           });
-            //         },
-            //         child: const Padding(
-            //           padding: EdgeInsets.symmetric(vertical: 16.0),
-            //           child: Text("Desktop controls"),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            // if (Platform.isAndroid)
-            //   ListTile(
-            //     title: const Text("Delay"),
-            //     subtitle: DelaySlider(
-            //       delay:
-            //           _chewieController?.progressIndicatorDelay?.inMilliseconds,
-            //       onSave: (delay) async {
-            //         if (delay != null) {
-            //           bufferDelay = delay == 0 ? null : delay;
-            //           await initializePlayer();
-            //         }
-            //       },
-            //     ),
-            //   )
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -351,52 +161,3 @@ class _ChewieDemoState extends State<ChewieDemo> {
   }
 }
 
-class DelaySlider extends StatefulWidget {
-  const DelaySlider({super.key, required this.delay, required this.onSave});
-
-  final int? delay;
-  final void Function(int?) onSave;
-  @override
-  State<DelaySlider> createState() => _DelaySliderState();
-}
-
-class _DelaySliderState extends State<DelaySlider> {
-  int? delay;
-  bool saved = false;
-
-  @override
-  void initState() {
-    super.initState();
-    delay = widget.delay;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    const int max = 1000;
-    return ListTile(
-      title: Text(
-        "Progress indicator delay ${delay != null ? "${delay.toString()} MS" : ""}",
-      ),
-      subtitle: Slider(
-        value: delay != null ? (delay! / max) : 0,
-        onChanged: (value) async {
-          delay = (value * max).toInt();
-          setState(() {
-            saved = false;
-          });
-        },
-      ),
-      trailing: IconButton(
-        icon: const Icon(Icons.save),
-        onPressed: saved
-            ? null
-            : () {
-                widget.onSave(delay);
-                setState(() {
-                  saved = true;
-                });
-              },
-      ),
-    );
-  }
-}
